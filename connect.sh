@@ -6,6 +6,12 @@ fi
 
 GIDDYUP=/opt/rancher/bin/giddyup
 
+function add_root_user {
+    if [ -n "$MONGO_INITDB_ROOT_USERNAME" ]; then
+        mongo admin --host $1 --eval "printjson(db.createUser({user:\"$MONGO_INITDB_ROOT_USERNAME\", pwd: \"$MONGO_INITDB_ROOT_PASSWORD\", roles: [\"root\"]}))"
+    fi
+}
+
 function cluster_init {
 	sleep 10
 	mongo --eval "printjson(rs.initiate())"
@@ -20,6 +26,7 @@ function find_master {
 	for member in $($GIDDYUP ip stringify --delimiter " "); do
 		IS_MASTER=$(mongo --host $member --eval "printjson(db.isMaster())" | grep 'ismaster')
 		if echo $IS_MASTER | grep "true"; then
+            add_root_user $member
 			return 0
 		fi
 	done
