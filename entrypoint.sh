@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -n "$CATTLE_SCRIPT_DEBUG" ]; then 
-	set -x
+    set -x
 fi
 
 # Check for lowest ID
@@ -23,18 +23,18 @@ fi
 set -e
 
 if [ "${1:0:1}" = '-' ]; then
-	set -- mongod "$@"
+    set -- mongod "$@"
 fi
 
 if [ "$1" = 'mongod' ]; then
-	chown -R mongodb /data/db
+    chown -R mongodb /data/db
 
-	numa='numactl --interleave=all'
-	if $numa true &> /dev/null; then
-		set -- $numa "$@"
-	fi
+    numa='numactl --interleave=all'
+    if $numa true &> /dev/null; then
+        set -- $numa "$@"
+    fi
 
-	exec gosu mongodb "$@"
+    exec gosu mongodb "$@"
 fi
 exec "$@"
 
