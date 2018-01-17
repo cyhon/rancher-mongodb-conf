@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.1
 MAINTAINER Hussein Galal
 
 # install giddyup
