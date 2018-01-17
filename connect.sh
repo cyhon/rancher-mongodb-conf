@@ -19,6 +19,8 @@ function cluster_init {
         mongo --eval "printjson(rs.add('$member:27017'))"
         sleep 5
     done
+
+    add_root_user
 }
 
 function find_master {
