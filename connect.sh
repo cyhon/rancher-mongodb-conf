@@ -7,7 +7,7 @@ fi
 GIDDYUP=/opt/rancher/bin/giddyup
 
 function add_root_user {
-    if [ -n "$MONGO_INITDB_ROOT_USERNAME" ]; then
+    if [ -n "$MONGO_INITDB_ROOT_USERNAME" ] && [ -n "$MONGO_INITDB_ROOT_PASSWORD" ]; then
         mongo admin --eval "printjson(db.createUser({user:\"$MONGO_INITDB_ROOT_USERNAME\", pwd: \"$MONGO_INITDB_ROOT_PASSWORD\", roles: [\"root\"]}))"
     fi
 }
